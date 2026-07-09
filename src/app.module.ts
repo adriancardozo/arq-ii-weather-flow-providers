@@ -26,8 +26,10 @@ import { SubscriberController } from './adapters/primary/http/controllers/subscr
 import { SubscriberProcessor } from './adapters/primary/queue/processors/subscriber.processor';
 import { ServiceBusProcessorManager } from './adapters/primary/queue/helpers/service-bus-processor-manager.helper';
 import { ExternalSubscriberController } from './adapters/primary/http/controllers/external-subscriber.controller';
+import { CacheModule } from '@nestjs/cache-manager';
+import { Keyv } from 'keyv';
 
-const { service_bus, mongo } = configuration();
+const { service_bus, mongo, redis, cache } = configuration();
 
 @Module({
   imports: [
@@ -36,6 +38,13 @@ const { service_bus, mongo } = configuration();
     MongooseModule.forFeature([{ name: Subscriber.name, schema: SubscriberSchema }]),
     HttpModule,
     ScheduleModule.forRoot(),
+    CacheModule.registerAsync({
+      useFactory: async () => {
+        if (cache.disabled) return { stores: [], ttl: -1 };
+        const { default: KeyvRedis } = await import('@keyv/redis');
+        return { stores: [new Keyv(), ...(redis.url ? [new KeyvRedis(redis.url, redis.options)] : [])] };
+      },
+    }),
   ],
   controllers: [AppController, SubscriberController, ExternalSubscriberController],
   providers: [
