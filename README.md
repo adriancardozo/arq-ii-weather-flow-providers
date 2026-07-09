@@ -42,6 +42,9 @@ SCHEDULER_SYNCHRONIZE_STATIONS_DISABLED=<synchronize_stations_disabled_scheduler
 OPEN_WEATHER_MAP_URL=<open_weather_map_url>
 OPEN_WEATHER_MAP_KEY=<open_weather_map_key>
 WEATHER_FLOW_WEATHER_URL=<weather_flow_weather_service_url>
+REDIS_CACHE_URL=<redis_cache_url (optional)>
+REDIS_CACHE_CONNECTION_TIMEOUT=<redis_cache_connection_timeout (default: 2000)>
+CACHE_DISABLED=<cache_disabled (default: false)>
 ```
 
 Start project
@@ -74,6 +77,9 @@ SCHEDULER_SYNCHRONIZE_STATIONS_DISABLED=<synchronize_stations_disabled_scheduler
 OPEN_WEATHER_MAP_URL=<open_weather_map_url>
 OPEN_WEATHER_MAP_KEY=<open_weather_map_key>
 WEATHER_FLOW_WEATHER_URL=<weather_flow_weather_service_url>
+REDIS_CACHE_URL=<redis_cache_url (optional)>
+REDIS_CACHE_CONNECTION_TIMEOUT=<redis_cache_connection_timeout (default: 2000)>
+CACHE_DISABLED=<cache_disabled (default: false)>
 ```
 
 Create a container from this image
