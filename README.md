@@ -33,6 +33,8 @@ Then complete whit environment values
 
 ```bash
 SELF_VERSION=-
+MONGO_URI=<mongo_uri>
+DNS_SERVERS=8.8.8.8,4.4.4.4
 SERVICE_BUS_CONNECTION_STRING=<service_bus_connection_string>
 PORT=3002
 SCHEDULER_SYNCHRONIZE_STATIONS=<synchronize_stations_chron_scheduler (default every five minutes: '0 */5 * * * *')>
@@ -63,6 +65,8 @@ Then complete whit environment values
 
 ```bash
 SELF_VERSION=-
+MONGO_URI=<mongo_uri>
+DNS_SERVERS=8.8.8.8,4.4.4.4
 SERVICE_BUS_CONNECTION_STRING=<service_bus_connection_string>
 PORT=3002
 SCHEDULER_SYNCHRONIZE_STATIONS=<synchronize_stations_chron_scheduler (default every five minutes: '0 */5 * * * *')>

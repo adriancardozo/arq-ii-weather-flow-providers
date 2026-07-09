@@ -1,6 +1,6 @@
-import { LocationInput } from '../../input/services/dtos/input/location.input';
-import { RegisterMeasurementInput } from './dtos/input/register-measurement.input';
+import { Location } from 'src/bussiness/value-objects/location.value-object';
+import { MeasurementOutput } from './dtos/output/measurement.output';
 
 export abstract class IWeatherProviderService {
-  abstract measure(station: string | null, location: LocationInput): Promise<RegisterMeasurementInput>;
+  abstract measure(location: Location): Promise<MeasurementOutput>;
 }

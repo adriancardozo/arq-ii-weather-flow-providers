@@ -4,9 +4,11 @@ import {
   ArgumentsHost,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { BaseExceptionFilter, HttpAdapterHost } from '@nestjs/core';
 import { BussinessError } from 'src/bussiness/errors/bussiness.error';
+import { SubscriberNotFoundError } from 'src/bussiness/errors/subscriber-not-found.error';
 
 @Catch(BussinessError)
 export class BussinessExceptionFilter implements ExceptionFilter {
@@ -19,6 +21,7 @@ export class BussinessExceptionFilter implements ExceptionFilter {
 
   catch(exception: BussinessError, host: ArgumentsHost) {
     try {
+      if (exception instanceof SubscriberNotFoundError) throw new NotFoundException(exception.message);
       throw new InternalServerErrorException();
     } catch (error) {
       this.logger.error(error);
