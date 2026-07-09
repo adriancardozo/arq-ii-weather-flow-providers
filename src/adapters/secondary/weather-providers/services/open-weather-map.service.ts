@@ -2,11 +2,11 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { RegisterMeasurementInput } from 'src/bussiness/ports/output/services/dtos/input/register-measurement.input';
 import { IWeatherProviderService } from 'src/bussiness/ports/output/services/i-weather-provider.service';
 import { Configuration } from 'src/infrastructure/configuration/configuration';
 import { OpenWeatherMapMeasurement } from './types/open-weather-map-measurement.type';
-import { LocationInput } from 'src/bussiness/ports/input/services/dtos/input/location.input';
+import { MeasurementOutput } from 'src/bussiness/ports/output/services/dtos/output/measurement.output';
+import { Location } from 'src/bussiness/value-objects/location.value-object';
 
 @Injectable()
 export class OpenWeatherMapService implements IWeatherProviderService {
@@ -22,12 +22,12 @@ export class OpenWeatherMapService implements IWeatherProviderService {
     this.apiKey = api_key;
   }
 
-  async measure(station: string, location: LocationInput): Promise<RegisterMeasurementInput> {
+  async measure(location: Location): Promise<MeasurementOutput> {
     const result = this.httpService.get<OpenWeatherMapMeasurement>(
       `${this.url}?lat=${location.latitude}&lon=${location.longitude}&units=metric&appid=${this.apiKey}`,
     );
     const { data } = await firstValueFrom(result);
     const { pressure, temp: temperature, humidity } = data.main;
-    return new RegisterMeasurementInput(pressure, temperature, humidity, station);
+    return new MeasurementOutput(pressure, temperature, humidity);
   }
 }
