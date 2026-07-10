@@ -121,11 +121,15 @@ jobs:
         with:
           imageToDeploy: ${{ vars.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.TAG_NAME }}
           acrUsername: ${{ vars.REGISTRY_USERNAME }}
-          acrPassword: secretref:registry-password
+          acrPassword: secretref:${{ vars.REGISTRY_PASSWORD_SECRET_NAME }}
           environmentVariables: ${{ env.ENVIRONMENT_VARIABLES }}
           targetPort: ${{ vars.PORT }}
           containerAppName: ${{ vars.CONTAINER_APP_NAME }}
           resourceGroup: ${{ vars.RESOURCE_GROUP_NAME }}
+      - name: 'Set Container App registry password secret'
+        run: |
+          az containerapp up --name ${{ vars.CONTAINER_APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP_NAME }} --image ${{ vars.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.TAG_NAME }} --registry-server ${{ vars.REGISTRY_URL }} --registry-username ${{ vars.REGISTRY_USERNAME }} --registry-password "secretref:${{ vars.REGISTRY_PASSWORD_SECRET_NAME }}"
+          az containerapp secret remove --name ${{ vars.CONTAINER_APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP_NAME }} --secret-names "${{ vars.REGISTRY_NAME }}azurecrio-${{ vars.REGISTRY_NAME }}"
       - name: 'Azure logout'
         run: |
           az logout
