@@ -11,11 +11,11 @@ export class MeasurementQueueService implements INotifierService {
 
   async notify(
     subscriber: Subscriber,
-    { pressure, humidity, temperature }: MeasurementOutput,
+    { pressure, temperature, humidity }: MeasurementOutput,
   ): Promise<void> {
     await this.queueService.send(
       'measurement',
-      new RegisterMeasurementInput(pressure, humidity, temperature, subscriber.externalId),
+      new RegisterMeasurementInput(pressure, temperature, humidity, subscriber.externalId),
     );
   }
 }
