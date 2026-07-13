@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './adapters/primary/http/controllers/app.controller';
 import { ISubscriberService } from './bussiness/ports/input/services/i-subscriber.service';
 import { SubscriberService } from './bussiness/services/subscriber.service';
@@ -28,6 +28,9 @@ import { ServiceBusProcessorManager } from './adapters/primary/queue/helpers/ser
 import { ExternalSubscriberController } from './adapters/primary/http/controllers/external-subscriber.controller';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Keyv } from 'keyv';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { exporter } from './infrastructure/open-telemetry/instrumentation';
+import { MetricsMiddleware } from './adapters/primary/http/middlewares/metrics.middleware';
 
 const { service_bus, mongo, redis, cache } = configuration();
 
@@ -70,6 +73,11 @@ const { service_bus, mongo, redis, cache } = configuration();
     MongoSubscriberRepository,
     { provide: ISubscriberRepository, useExisting: MongoSubscriberRepository },
     ServiceBusQueueService,
+    { provide: PrometheusExporter, useValue: exporter },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MetricsMiddleware).exclude('/metrics').forRoutes('*');
+  }
+}
