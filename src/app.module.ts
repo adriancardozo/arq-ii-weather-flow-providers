@@ -32,6 +32,7 @@ import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { exporter } from './infrastructure/open-telemetry/instrumentation';
 import { MetricsMiddleware } from './adapters/primary/http/middlewares/metrics.middleware';
 import { TracesMiddleware } from './adapters/primary/http/middlewares/traces.middleware';
+import { OpenTelemetryLoggerService } from './infrastructure/logger/open-telemetry-logger.service';
 
 const { service_bus, mongo, redis, cache } = configuration();
 
@@ -61,6 +62,7 @@ const { service_bus, mongo, redis, cache } = configuration();
     },
     ServiceBusProcessorManager,
     Logger,
+    OpenTelemetryLoggerService,
     OpenWeatherMapService,
     WeatherProviderManagerService,
     { provide: IWeatherProviderManagerService, useExisting: WeatherProviderManagerService },
