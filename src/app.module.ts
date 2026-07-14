@@ -31,6 +31,7 @@ import { Keyv } from 'keyv';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { exporter } from './infrastructure/open-telemetry/instrumentation';
 import { MetricsMiddleware } from './adapters/primary/http/middlewares/metrics.middleware';
+import { TracesMiddleware } from './adapters/primary/http/middlewares/traces.middleware';
 
 const { service_bus, mongo, redis, cache } = configuration();
 
@@ -78,6 +79,6 @@ const { service_bus, mongo, redis, cache } = configuration();
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(MetricsMiddleware).exclude('/metrics').forRoutes('*');
+    consumer.apply(TracesMiddleware, MetricsMiddleware).exclude('/metrics').forRoutes('*');
   }
 }
