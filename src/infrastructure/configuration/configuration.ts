@@ -45,8 +45,9 @@ const configuration = {
   },
   cache: {
     disabled: cache_disabled,
-    ttl: { average_day: ttl(60 * 60 * 1000), average_week: ttl(24 * 60 * 60 * 1000) },
+    ttl: { open_weather_map: ttl(parseInt(process.env.OPEN_WEATHER_MAP_CACHE_TTL ?? `${3 * 60 * 1000}`)) },
   },
+  timeout: { open_weather_map: parseInt(process.env.OPEN_WEATHER_MAP_TIMEOUT ?? '1500') },
   insights: { connection_string: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING },
 };
 
