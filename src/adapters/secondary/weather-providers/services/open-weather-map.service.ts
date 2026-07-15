@@ -28,7 +28,7 @@ export class OpenWeatherMapService implements IWeatherProviderService {
     const { url: baseUrl, api_key } =
       this.configService.get<Configuration['open_weather_map']>('open_weather_map')!;
     this.cacheConfig = this.configService.get<Configuration['cache']>('cache')!;
-    this.timeout = this.configService.get<Configuration['timeout']>('yimeout')!;
+    this.timeout = this.configService.get<Configuration['timeout']>('timeout')!;
     this.url = `${baseUrl}/weather`;
     this.apiKey = api_key;
     const circuit_options = this.configService.get<Configuration['circuit_breakers']['open_weather_map']>(
